@@ -11,9 +11,9 @@ except:
     pass
 
 try:
-    from zh_wiki import zh2Hant, zh2Hans
+    from zh_wiki import zh2Hant, zh2Hans, zh2TW, zh2CN
 except ImportError:
-    from zhtools.zh_wiki import zh2Hant, zh2Hans
+    from zhtools.zh_wiki import zh2Hant, zh2Hans, zh2TW, zh2CN
 
 import sys
 py3k = sys.version_info >= (3, 0, 0)
@@ -21,12 +21,14 @@ py3k = sys.version_info >= (3, 0, 0)
 if py3k:
     UEMPTY = ''
 else:
-    _zh2Hant, _zh2Hans = {}, {}
-    for old, new in ((zh2Hant, _zh2Hant), (zh2Hans, _zh2Hans)):
+    _zh2Hant, _zh2Hans, _zh2TW, _zh2CN = {}, {}, {}, {}
+    for old, new in ((zh2Hant, _zh2Hant), (zh2Hans, _zh2Hans), (zh2TW, _zh2TW), (zh2CN, _zh2CN)):
         for k, v in old.items():
             new[k.decode('utf8')] = v.decode('utf8')
     zh2Hant = _zh2Hant
     zh2Hans = _zh2Hans
+    zh2TW = _zh2TW
+    zh2CN = _zh2CN
     UEMPTY = ''.decode('utf8')
 
 # states
@@ -234,7 +236,9 @@ def registery(name, mapping):
 
 registery('zh-hant', zh2Hant)
 registery('zh-hans', zh2Hans)
-del zh2Hant, zh2Hans
+registery('zh-tw', zh2TW)
+registery('zh-cn', zh2CN)
+del zh2Hant, zh2Hans, zh2TW, zh2CN
 
 
 def run():
